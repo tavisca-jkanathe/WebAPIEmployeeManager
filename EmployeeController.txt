@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using WebAPIExample.Models;
+
+namespace WebAPIExample.Controllers
+{
+    public class EmployeeController : ApiController
+    {
+
+
+        IList<Employee> employees = new List<Employee>()
+        {
+            new Employee(1,"A","N","D2",1, "30000","23")
+              //  {
+                   // EmployeeId = 1, EmployeeName = "A", Salary ="30000", Age ="23", Address = "N", Department = "I", Mid =1
+                //}
+                ,
+                new Employee(2,"B","L","D2",1,"30000","23")
+            ,
+                new Employee(3,"C","H","D3",2,"30000","23")
+                ,
+                new Employee(4,"D","L","D1",3,"30000","23")
+               ,
+                new Employee(5,"E","L","D3",3,"30000","23")
+                ,
+        };
+        
+        public IList<Employee> GetAllEmployees()
+        {
+            //Return list of all employees  
+            return employees;
+        }
+        public IList<Employee> GetEmployeeDetails(int id)
+        {
+            IList<Employee> employeesupdated = new List<Employee>();
+          //  employeesupdated.
+            //Return a single employee detail  
+            //var  employee = employees.FirstOrDefault(e => e.Mid == id);
+            foreach(Employee e in employees)
+            {
+                if(e.Mid == id)
+                {
+                    employeesupdated.Add(e);
+                }
+            }
+          // var  employee = employees.
+            if (employeesupdated == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+            return employeesupdated;
+        }
+
+
+        // POST api/values
+        public void Post([FromBody]int empid,
+            string empname,
+            string empsal,
+            string empage,
+            string empadd,
+            string empdept,
+            int empmid )
+        {
+            employees.Add(new Employee(empid, empname, empadd, empdept, empmid, empsal, empage) );
+        }
+
+
+    }
+}
